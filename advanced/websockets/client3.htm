@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WebSocket Client 3</title>
+<style>
+body {
+  margin: 0;
+  padding: 15px;
+  font-family: Arial, sans-serif;
+  background-color: white;
+}
+h2 { margin-top: 0; }
+#received {
+  margin-top: 15px;
+  padding: 10px;
+  min-height: 80px;
+  border: 1px solid #888;
+}
+</style>
+<script>
+let room = "room1";
+
+let websocket;
+let isOpen = false;
+let changingRoom = false;
+
+function webSocketStart() {
+  const protocol = location.protocol === "https:" ? "wss://" : "ws://";
+  const wsUri = protocol + location.host + "?room=" + encodeURIComponent(room);
+
+  websocket = new WebSocket(wsUri);
+  websocket.onopen = function(evt) { onOpen(evt); };
+  websocket.onerror = function(evt) { onError(evt); };
+  websocket.onmessage = function(evt) { onMessage(evt); };
+  websocket.onclose = function(evt) { onClose(evt); };
+}
+
+function onOpen(evt) {
+  isOpen = true;
+}
+
+function onError(evt) {
+  console.log("WebSocket error",evt);
+}
+
+function onMessage(evt) {
+  showMessage(evt.data);
+}
+
+function onClose(evt) {
+  isOpen = false;
+
+  if (changingRoom) {
+    changingRoom = false;
+    showRoom();
+    webSocketStart();
+  }
+}
+
+function changeRoom() {
+  const input = document.getElementById("newRoom");
+  if (input.value === "" || input.value === room) return;
+
+  room = input.value;
+  input.value = "";
+  changingRoom = true;
+  websocket.close();
+}
+
+function doSend() {
+  const input = document.getElementById("message");
+  if (!isOpen || input.value === "") return;
+
+  websocket.send(input.value);
+  showMessage(input.value);
+  input.value = "";
+}
+
+function showMessage(msg) {
+  const received = document.getElementById("received");
+  const message = document.createElement("div");
+  message.textContent = msg;
+  received.appendChild(message);
+}
+
+function showRoom() {
+  document.getElementById("room").textContent = room;
+}
+
+function init() {
+  showRoom();
+  webSocketStart();
+}
+
+window.onload = init;
+</script>
+</head>
+<body>
+<h2>Client 3</h2>
+<div>Room: <span id="room"></span></div>
+
+<form onsubmit="changeRoom(); return false;">
+  <input id="newRoom" type="text" placeholder="Change rooms">
+</form>
+
+<form onsubmit="doSend(); return false;">
+  <input id="message" type="text" placeholder="Send message">
+</form>
+
+<div id="received"></div>
+</body>
+</html>

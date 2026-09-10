@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Achieve v3 examples</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: lightblue;
+        font-family: Arial, sans-serif;
+      }
+      header img {
+        width: 100%;
+        display: block;
+      }
+      main {
+        margin: 2% 5% 5%;
+      }
+      footer {
+        padding: 1.5% 5%;
+        box-sizing: border-box;
+        border-top: solid blue thick;
+      }
+    </style>
+    <script>
+    function init () {
+      fetch("confirm/servlets/hello.jss")
+        .then(function (response) {
+            if (!response.ok) throw new Error("HTTP " + response.status);
+            return response.text();
+        })
+        .then(function (message) {
+            document.getElementById("server-check").innerHTML = message;
+        })
+        .catch(function (error) {
+            document.getElementById("server-check").innerHTML = "<span style='color:red'>Achieve server check failed: " + error.message + "</span>";
+        });
+     }
+     window.onload=init;
+    </script>
+</head>
+<body>
+  <header><img src="images/skyhigh1.jpg" alt=""></header>
+    <main>
+        <h1>Achieve v3 examples</h1>
+        <p>These examples progress from starting a small Achieve application, through configuring Achieve features, to using Achieve with the wider Node.js ecosystem.</p>
+        <section aria-labelledby="server-check-title">
+            <h2 id="server-check-title">Server check</h2>
+            <p id="server-check">Waiting for servlet response ... is Achieve running?</p>
+        </section>
+        <section aria-labelledby="intro-title">
+            <h2 id="intro-title">Summary</h2>
+            <p><strong>Friendly in development. Fast in production.</strong></p>
+            <ul>
+                <li><a href="intro/intro.htm">Orientation / executive summary</a></li>
+                <li><a href="intro/dev_mode.htm">Development mode</a></li>
+                <li><a href="intro/prod_mode.htm">Production mode</a></li>
+            </ul>
+        </section>
+        <section aria-labelledby="admin-title">
+           <h2 id="admin-title">Administration</h2>
+           <p>Configure and operate an Achieve server.</p>
+           <ul>
+              <li><a href="admin/startup/">Startup configuration</a></li>
+              <li><a href="admin/config/">Configuration reference</a></li>
+              <li><a href="admin/protocols/">HTTP, HTTPS, and HTTP/2</a></li>
+              <li><a href="admin/logging/">Console, server, and access logging</a></li>
+           </ul>
+        </section>
+        <section aria-labelledby="basics-title">
+            <h2 id="basics-title">Basics</h2>
+            <p>Get something useful running quickly. Start with <a href="basics/startup/application/"><strong>Startup</strong></a>.</p>
+            <ul>
+                <li><a href="basics/startup/application/">Startup and application structure</a></li>
+                <li><a href="basics/routing/">Default and custom routing</a></li>
+                <li><a href="basics/servlets/">Introduction to servlets</a></li>
+                <li><a href="basics/get/">GET servlet request</a></li>
+                <li><a href="basics/error/">Achieve error handling</a></li>
+                <li><a href="basics/post/">Form POST servlet request</a></li>
+                <li><a href="basics/json/">JSON POST servlet request</a></li>
+                <li><a href="basics/responses/">Servlet response types</a></li>
+                <li><a href="basics/media/">Media streaming and seeking</a></li>
+            </ul>
+        </section>
+        <section aria-labelledby="intermediate-title">
+            <h2 id="intermediate-title">Intermediate</h2>
+            <p>Learn deliberate configuration and use of Achieve capabilities.</p>
+            <ul>
+                <li><a href="intermediate/async/">Asynchronous servlets</a></li>
+                <li><a href="intermediate/conditional/">Conditional requests, caching, and compression</a></li>
+                <li><a href="intermediate/head/">HEAD servlet request</a></li>
+                <li><a href="intermediate/options/">OPTIONS request</a></li>
+                <li><a href="intermediate/cors/">Cross-origin resource sharing (CORS)</a></li>
+                <li><a href="intermediate/methods/">The other HTTP methods, including custom methods</a></li>
+            </ul>
+        </section>
+        <section aria-labelledby="advanced-title">
+            <h2 id="advanced-title">Advanced Demonstrations</h2>
+            <p>Use Achieve alongside standard Node.js facilities and external modules.</p>
+            <ul>
+                <li><a href="advanced/mysql/">MySQL</a></li>
+                <li><a href="advanced/websockets/">WebSockets and Rooms</a></li>
+                <li><a href="advanced/cluster/">Node.js clustering and benchmarking</a></li>
+                <li><a href="advanced/xml/">Streaming XML with an external SAX parser</a></li>
+                <li><a href="advanced/distributed/">Distributed computing</a></li>
+                <li><a href="advanced/soap/">SOAP</a></li>
+            </ul>
+        </section>
+    </main>
+  <footer>
+    <a href="https://www.npmjs.com/package/achieve">Achieve on npm</a><br>
+    <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a>
+  </footer>
+</body>
+</html>

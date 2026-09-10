@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Achieve v3 - Cluster</title>
+
+<style>
+body {
+  margin:0;
+  padding:0;
+  background-color:lightblue;
+  font-family:Arial,sans-serif;
+}
+header img {
+  width:100%;
+  display:block;
+}
+#friend {
+  margin:0;
+  padding:0;
+  text-align:center;
+  color:rgb(40,200,32);
+  font-style:italic;
+  font-weight:bold;
+  border-bottom:thick solid blue;
+}
+.navLink {
+  display:inline-block;
+  margin:1em 5% 0;
+}
+.backArrow {
+  font-size:1.2em;
+}
+.tabs {
+  padding:.5em 5% 0;
+  border-bottom:solid blue 2px;
+}
+.tabs button {
+  padding:.45em .8em;
+  border:solid blue 2px;
+  border-bottom:0;
+  border-radius:.5em .5em 0 0;
+  background-color:rgb(220,235,245);
+  color:blue;
+  cursor:pointer;
+}
+.tabs button.active {
+  background-color:lightblue;
+  color:black;
+  border-bottom:solid lightblue 2px;
+  margin-bottom:-2px;
+}
+.tabHint {
+  margin:.5em 5%;
+  font-size:.9em;
+  font-style:italic;
+}
+main {
+  margin:2% 5% 5%;
+}
+.resultBox {
+  max-width:38em;
+  margin:1.5em 0;
+  padding:1em 1.5em;
+  background-color:white;
+  border-radius:.5em;
+}
+.resultLabel {
+  font-weight:bold;
+}
+.resultValue {
+  margin:.25em 0 1em;
+  font-size:1.25em;
+}
+#comparison {
+  margin-top:.5em;
+  font-weight:bold;
+}
+.note {
+  max-width:55em;
+}
+code {
+  padding:.08em .35em;
+  border-radius:.3em;
+  background-color:rgb(220,235,245);
+  color:blue;
+  font-family:Consolas,"Courier New",monospace;
+}
+pre {
+  overflow:auto;
+  padding:1em;
+  background-color:white;
+  border-radius:.4em;
+}
+#codeText {
+  padding:0;
+  border-radius:0;
+  background-color:transparent;
+  color:inherit;
+  white-space:pre-wrap;
+}
+footer {
+  padding:1.5% 5%;
+  border-top:thick solid blue;
+}
+@media (max-width:600px) {
+  .tabs button {
+    padding:.4em .55em;
+    font-size:.85em;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="../../images/skyhigh1.jpg" alt="">
+</header>
+
+<h3 id="friend">Friendly in development. Fast in production.  Just build your apps. Let Achieve do the rest.</h3>
+
+<a class="navLink" href="../../"><span class="backArrow">←</span> Back to main examples index</a>
+
+<div class="tabs">
+  <button class="active" onclick="showDemo(this)">Demo</button>
+  <button onclick="showCode(this,'client')">Client</button>
+  <button onclick="showCode(this,'startup')">Startup</button>
+  <button onclick="showCode(this,'single')">Single Process</button>
+  <button onclick="showCode(this,'cluster')">Cluster</button>
+  <button onclick="showCode(this,'servlet')">Prime Servlet</button>
+</div>
+
+<div class="tabHint">Use the tabs to inspect the code behind this demonstration.</div>
+
+<main>
+
+<section id="demo">
+
+<h2>Cluster</h2>
+
+<p>From the adjacent Achieve directory, run <code>node start-cluster.mjs</code>. It starts the single-process server on port 8989 and the clustered server on port 8990.</p>
+
+<p><strong>SCENARIO:</strong> Your application needs more processing power than a single Node.js process can provide.</p>
+
+<p>Node's cluster support lets Achieve run multiple worker processes across multiple CPU cores.</p>
+
+<p>This demonstration runs 16 CPU-intensive prime-number calculations first with a single Achieve process and then with multiple Achieve cluster workers.</p>
+
+<p>The test runs automatically. The results below show the elapsed time for each batch.</p>
+
+<div class="resultBox">
+  <div class="resultLabel">Single process</div>
+  <div class="resultValue" id="singleResult">Calculating...</div>
+
+  <div class="resultLabel">Cluster</div>
+  <div class="resultValue" id="clusterResult">Waiting...</div>
+
+  <div id="comparison"></div>
+</div>
+
+<p class="note">Results will vary with the application, workload, available CPU cores, hardware, and other activity on the system.</p>
+
+<p><strong>Achieve can scale across CPU cores. Node's cluster support does the rest.</strong></p>
+
+</section>
+
+<section id="source" hidden>
+  <pre><code id="codeText"></code></pre>
+</section>
+
+</main>
+
+<footer>
+  <a href="https://www.npmjs.com/package/achieve">Achieve on npm</a><br>
+  <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a>
+</footer>
+
+<script>
+const jobCount = 16;
+
+/*
+ * Node cluster distributes connections, not individual requests on an
+ * established HTTP/1.1 connection. Giving each calculation its own job
+ * target allows the browser to use multiple concurrent connections.
+ *
+ * The client controls how many connections it actually uses, so the number
+ * of cluster workers participating may be smaller than jobCount.
+ *
+ * Each response body is consumed so elapsed time represents completed jobs,
+ * rather than merely the arrival of response headers.
+ */
+async function runTest(url) {
+  const start = performance.now();
+
+  await Promise.all(
+    Array.from({length:jobCount}, async (_,job) => {
+      const response = await fetch(`${url}?job=${job}`, {cache:"no-store"});
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      await response.text();
+    })
+  );
+
+  return performance.now() - start;
+}
+
+async function runDemo() {
+  const singleResult = document.getElementById("singleResult");
+  const clusterResult = document.getElementById("clusterResult");
+  const comparison = document.getElementById("comparison");
+
+  try {
+    const singleTime = await runTest("servlets/primes.jss");
+    singleResult.textContent = formatTime(singleTime);
+
+    clusterResult.textContent = "Calculating...";
+
+    const clusterTime = await runTest("http://localhost:8990/advanced/cluster/servlets/primes.jss");
+    clusterResult.textContent = formatTime(clusterTime);
+
+    if (clusterTime < singleTime) {
+      const ratio = singleTime / clusterTime;
+      comparison.textContent =
+        `For this workload, cluster completed the work about ${ratio.toFixed(1)}× faster.`;
+    } else if (clusterTime > singleTime) {
+      const ratio = clusterTime / singleTime;
+      comparison.textContent =
+        `For this workload, cluster took about ${ratio.toFixed(1)}× as long.`;
+    } else {
+      comparison.textContent =
+        "For this workload, the completion times were approximately the same.";
+    }
+  } catch (error) {
+    comparison.textContent = `Test failed: ${error.message}`;
+  }
+}
+
+function formatTime(milliseconds) {
+  return `${(milliseconds / 1000).toFixed(2)} seconds`;
+}
+
+function setActive(button) {
+  document.querySelectorAll(".tabs button").forEach(button => button.classList.remove("active"));
+  button.classList.add("active");
+}
+
+function showDemo(button) {
+  setActive(button);
+  document.getElementById("source").hidden = true;
+  document.getElementById("demo").hidden = false;
+}
+
+async function showCode(button,file) {
+  setActive(button);
+
+  const response = await fetch(`servlets/loadCode.jss.mjs?file=${encodeURIComponent(file)}`);
+  const text = await response.text();
+
+  document.getElementById("codeText").textContent = text;
+  document.getElementById("demo").hidden = true;
+  document.getElementById("source").hidden = false;
+}
+
+window.onload = runDemo;
+</script>
+
+</body>
+</html>

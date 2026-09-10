@@ -1,0 +1,18 @@
+/*
+to tell the server how to route the request without parsing the XML first. 
+It remains the only major W3C-standardized XML protocol for web services of its kind." 
+SOAPAction is an HTTP Header (not a method).The W3C SOAP 1.1 Specification required this header so firewalls, 
+proxies, and web servers could read the intent of the message (e.g., SOAPAction: "http://example.com") and route or filter 
+it immediately without wasting CPU cycles parsing the massive XML string inside the payload.In SOAP 1.2, this header was turned into an optional parameter 
+inside the standard Content-Type header (e.g., Content-Type: application/soap+xml; action="url").
+*/
+
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://xmlsoap.org">
+  <soap:Header>
+    <!-- Authentication or routing metadata goes here -->
+  </soap:Header>
+  <soap:Body>
+    <!-- The actual application payload or function call goes here -->
+  </soap:Body>
+</soap:Envelope>

@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Achieve v3 - SOAP</title>
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACqklEQVQ4T32RW0hUURiF195zzoypo6Z5SY0uDF00rykp5aWHAvGtJCwhL9SURuqQjVCZQQ+JJGZqKt6iNNFJoR4sAiHyRSpRUxOihxJSqqGccWxu55zdi6eOU7be/rXW/8G/N8E6yj2dPqCJdIQwwtRqf4GoA4RZjTOgqv7s6KKyR9cDBKUvDXuF27ereNLWUT6R6pzfeMcmWkf0zQl1/wVc6k0NP9ce+5kyqmvTT2+N3B3aUzYY3ekbKrxrL5mKcpu1YwW3En5caDzk8xfA0H4gxmJdmfNZ1CU35k9eBQAb+ZhB1EIRgqzBANBd/dIkzeyJsy7bBtYAKroyNzt566jua3Zo3bWhBdmXmHRGZQusgpvfIXv37z2cBydpSlpSMn4D7PT7Jw18dMbqmw4oRCg7qA3i6wgvnlT6K8bObLvDUUMBwNCXmMMRL1N9wZhZWTIMxRQQghHLyhJjRDqszB4h3slRzQYOAECgb8h/dQQeYry7ki6EZRGtW2J+Zv9SU/QgUWGTczYis7XqORNdxMEBAFVhm+fyldo875/ipB8LMz+TONdO5qYut43ebimcHgVmAQBELYSsvgFb+xv9SfttUa9tTgtp5e1+e60z3iq4+QpeKybInVOXM7PUAY4PqycQuxIAib0nIhXu5s/ckK2y7pQR+FuM8uwbZTZSUdNFAYCqSIuhL6lJDgkvHWfL2mNKZkPh2JwkkF3yTFUkrSl//AEFAPWXiCGmtZ4v70z3BQCB2muJWnwKD7ks/BMAKO6Kf8HxtHhNaOxNyyszxQ0DQHlPcqrnsix9R1xf6UDsG3kmyvBi/74igXPUgLJxJtApiPyoe5n7xqgQTH1cuZSwo0TiKhtPvP1zLv6hst7EWIlzbgFIDKFSoCQSOxPJRHPe9cdADlN2fwG8FgTEn90+twAAAABJRU5ErkJggg==">
+
+    <style>
+      body { margin:0; padding:0; background-color:lightblue; font-family:Arial,sans-serif; }
+
+      header img { width:100%; display:block; }
+
+      #friend {
+        text-align:center;
+        font-style:italic;
+        font-weight:bold;
+        color:rgb(40,200,32);
+        border-bottom:solid blue thick;
+        padding:0;
+        margin:0;
+      }
+
+      .navLink {
+        display:inline-block;
+        margin:.6em 5% .2em;
+        color:rgb(30,80,150);
+        font-weight:bold;
+        text-decoration:none;
+      }
+
+      .navLink:hover { color:blue; }
+
+      .backArrow { margin-right:.4em; }
+
+      .packageLink {
+        color:rgb(30,80,150);
+        font-weight:bold;
+        text-decoration:none;
+      }
+
+      .packageLink:hover { color:blue; }
+
+      .tabHint {
+        margin:.6em 5% 0;
+        color:rgb(30,80,150);
+        font-weight:bold;
+      }
+
+      .tabs {
+        padding:.5em 5% 0;
+        border-bottom:solid blue 2px;
+      }
+
+      .tabs button {
+        padding:.5em 1em;
+        margin:0 .15em -2px 0;
+        border:solid blue 2px;
+        border-radius:.5em .5em 0 0;
+        background-color:rgb(220,235,245);
+        color:blue;
+        font-weight:bold;
+        cursor:pointer;
+      }
+
+      .tabs button:hover { background-color:white; }
+
+      .tabs button.active {
+        background-color:lightblue;
+        color:black;
+        border-bottom-color:lightblue;
+      }
+
+      main { margin:2% 5% 5%; }
+
+      #result {
+        margin:1.5em 0 .8em;
+        font-size:1.2em;
+        font-weight:bold;
+      }
+
+      #soapResponse {
+        padding:1em;
+        border:solid blue 1px;
+        background-color:white;
+        white-space:pre-wrap;
+        overflow-wrap:anywhere;
+      }
+
+      code {
+        padding:.08em .35em;
+        border-radius:.3em;
+        background-color:rgb(220,235,245);
+        color:blue;
+        font-family:Consolas,"Courier New",monospace;
+      }
+
+      #codeText {
+        padding:0;
+        border-radius:0;
+        background-color:transparent;
+        color:inherit;
+        white-space:pre-wrap;
+      }
+
+      footer {
+        padding:1.5% 5%;
+        box-sizing:border-box;
+        border-top:solid blue thick;
+      }
+    </style>
+
+    <script>
+      async function runDemo() {
+        try {
+          const response = await fetch("servlets/soap_request.jss.mjs");
+          const result = await response.text();
+
+          document.getElementById("soapResponse").textContent = result;
+          output(response.ok ? "SOAP response received." : "SOAP request failed: HTTP " + response.status);
+        } catch (err) {
+          output("SOAP request failed: " + err.message);
+        }
+      }
+
+      function output(msg="",elementID="result") {
+        document.getElementById(elementID).textContent = msg;
+      }
+
+      function selectTab(tab) {
+        document.querySelector(".tabs button.active").classList.remove("active");
+        tab.classList.add("active");
+      }
+
+      function showDemo(tab) {
+        selectTab(tab);
+        document.getElementById("demo").style.display = "block";
+        document.getElementById("codeDisplay").style.display = "none";
+      }
+
+      function showCode(tab,file) {
+        fetch("servlets/loadCode.jss.mjs?file=" + encodeURIComponent(file))
+          .then(response => response.text())
+          .then(source => {
+            document.getElementById("codeText").textContent = source;
+            document.getElementById("demo").style.display = "none";
+            document.getElementById("codeDisplay").style.display = "block";
+            selectTab(tab);
+          });
+      }
+
+      function init() {
+        runDemo();
+      }
+
+      window.onload = init;
+    </script>
+</head>
+
+<body>
+  <header>
+    <img src="../../images/skyhigh1.jpg" alt="">
+    <h3 id="friend">Friendly in development. Fast in production.  Just build your apps. Let Achieve do the rest.</h3>
+  </header>
+
+  <a class="navLink" href="../../"><span class="backArrow">←</span> Back to main examples index</a>
+
+  <div class="tabs">
+    <button class="active" type="button" onclick="showDemo(this)">Demo</button>
+    <button type="button" onclick="showCode(this,'startup')">Startup</button>
+    <button type="button" onclick="showCode(this,'service')">SOAP Service</button>
+    <button type="button" onclick="showCode(this,'client')">Client</button>
+    <button type="button" onclick="showCode(this,'servlet')">Servlet</button>
+    <button type="button" onclick="showCode(this,'codeServlet')">Code Servlet</button>
+  </div>
+
+  <div class="tabHint">Use the tabs to inspect the code behind this demonstration.</div>
+
+  <main>
+    <section id="demo">
+      <h1>SOAP</h1>
+
+      <p>From the adjacent Achieve directory, run <code>node start-soap.mjs</code>. This starts both Achieve and the demonstration SOAP service.</p>
+
+      <p>
+        SCENARIO: You need to run a full-service HTTP server that delivers content and runs a variety of back-end processes.
+        Some of those processes use external services over SOAP, then customize the result for the ultimate client. No problem!
+      </p>
+
+      <p>
+        This example uses the <a href="https://www.npmjs.com/package/soap">soap</a> package to communicate with an external SOAP service running on
+        <code>http://localhost:8990/soap/</code>.
+        The servlet <code>soap_request.jss.mjs</code> asks the service for the price of product <code>bk101</code>.
+      </p>
+
+      <p>
+        The SOAP service returns its result to the servlet. The servlet can then use, modify, combine, or reformat that information before returning
+        a normal HTTP response to the browser. In this simple example, it returns only the price information needed by the client.
+      </p>
+
+      <div id="result">The SOAP result will appear here.</div>
+      <pre id="soapResponse"></pre>
+    </section>
+
+    <section id="codeDisplay" style="display:none;">
+      <pre><code id="codeText"></code></pre>
+    </section>
+  </main>
+
+  <footer>
+    <a href="https://www.npmjs.com/package/achieve">Achieve on npm</a><br>
+    <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a>
+  </footer>
+</body>
+</html>

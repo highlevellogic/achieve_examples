@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+  name="InventoryService"
+  targetNamespace="http://example.com/inventory"
+  xmlns="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:tns="http://example.com/inventory"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <types>
+    <xsd:schema targetNamespace="http://example.com/inventory">
+      <xsd:element name="GetPrice">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="productId" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+
+      <xsd:element name="GetPriceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="price" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+    </xsd:schema>
+  </types>
+
+  <message name="GetPriceRequest">
+    <part name="parameters" element="tns:GetPrice"/>
+  </message>
+
+  <message name="GetPriceResponse">
+    <part name="parameters" element="tns:GetPriceResponse"/>
+  </message>
+
+  <portType name="InventoryPortType">
+    <operation name="GetPrice">
+      <input message="tns:GetPriceRequest"/>
+      <output message="tns:GetPriceResponse"/>
+    </operation>
+  </portType>
+
+  <binding name="InventoryBinding" type="tns:InventoryPortType">
+    <soap:binding style="document"
+                  transport="http://schemas.xmlsoap.org/soap/http"/>
+    <operation name="GetPrice">
+      <soap:operation soapAction="GetPrice"/>
+      <input>
+        <soap:body use="literal"/>
+      </input>
+      <output>
+        <soap:body use="literal"/>
+      </output>
+    </operation>
+  </binding>
+
+  <service name="InventoryService">
+    <port name="InventoryPort" binding="tns:InventoryBinding">
+      <soap:address location="http://localhost:8990/soap"/>
+    </port>
+  </service>
+
+</definitions>

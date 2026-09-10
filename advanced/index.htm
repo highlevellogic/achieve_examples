@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Achieve v3 - Advanced Demonstrations</title>
+<style>
+body { margin:0; padding:0; background-color:lightblue; font-family:Arial,sans-serif; }
+header img { width:100%; display:block; }
+#friend { margin:0; padding:0; text-align:center; color:rgb(40,200,32); font-style:italic; font-weight:bold; border-bottom:thick solid blue; }
+.navLink { display:inline-block; margin:1em 5% 0; }
+.backArrow { font-size:1.2em; }
+main { margin:2% 5% 5%; }
+.intro { max-width:70em; }
+.demoGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25em; max-width:76em; margin-top:1.5em; }
+.demoCard { padding:1em 1.25em; border-radius:.5em; background-color:white; }
+.demoCard h3 { margin-top:0; }
+.demoCard p:last-child { margin-bottom:0; }
+.demoCard a { font-weight:bold; }
+.runNote { max-width:70em; margin-top:2em; padding:1em 1.25em; border-radius:.5em; background-color:rgb(220,235,245); }
+code { padding:.08em .35em; border-radius:.3em; background-color:rgb(220,235,245); color:blue; font-family:Consolas,"Courier New",monospace; }
+footer { padding:1.5% 5%; border-top:thick solid blue; }
+@media (max-width:760px) { .demoGrid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <img src="../images/skyhigh1.jpg" alt="">
+</header>
+
+<h3 id="friend">Friendly in development. Fast in production.  Just build your apps. Let Achieve do the rest.</h3>
+
+<a class="navLink" href="../"><span class="backArrow">←</span> Back to main examples index</a>
+
+<main>
+
+<section class="intro">
+<h2>Advanced Demonstrations</h2>
+
+<p>These six demonstrations show Achieve working and playing well with Node.js, npm packages, databases and services. They also introduce techniques for streaming, distributing work and using available computing resources efficiently.</p>
+
+<p>They are not a separate “advanced Achieve” programming model. Achieve remains the HTTP server and application environment while ordinary Node.js capabilities and third-party packages do the jobs they were designed to do.</p>
+
+<p><strong>Simple to start. Not limited to simple systems.</strong></p>
+</section>
+
+<section class="demoGrid">
+
+<article class="demoCard">
+  <h3><a href="mysql/">MySQL</a></h3>
+  <p>MySQL presents one of the most common backend scenarios: application code interacting with a database. Separate servlets handle registration and login using the <code>mysql2</code> npm package.</p>
+  <p>The demonstration requires a MySQL-compatible database such as MariaDB. The supplied <code>setup.sql</code> creates the small database and table used by the demonstration.</p>
+</article>
+
+<article class="demoCard">
+  <h3><a href="websockets/">WebSockets</a></h3>
+  <p>WebSockets adds real-time, bidirectional communication using the <code>ws</code> npm package together with <code>achieve_rooms</code>. The WebSocket server works alongside Achieve on the same server and port, allowing connected clients to exchange messages and participate in rooms.</p>
+</article>
+
+<article class="demoCard">
+  <h3><a href="cluster/">Cluster</a></h3>
+  <p>Cluster uses Node.js built-in <code>node:cluster</code> module to run multiple Achieve workers and make use of multiple CPU cores.</p>
+  <p>The demonstration compares the same CPU-intensive workload with a single Achieve process and with clustered workers.</p>
+</article>
+
+<article class="demoCard">
+  <h3><a href="xml/">XML-SAX</a></h3>
+  <p>XML-SAX demonstrates stream processing using the <code>@nodable/sax</code> npm package. Achieve receives the HTTP request and makes its input stream available to the servlet. The servlet passes that stream to the SAX parser, which processes XML incrementally instead of first loading the complete document into memory.</p>
+</article>
+
+<article class="demoCard">
+  <h3><a href="distributed/">Distributed Computing</a></h3>
+  <p>Distributed Computing extends the streaming idea across servers. The first Achieve server relays the incoming stream to another Achieve server, where a servlet uses <code>@nodable/sax</code> to process the SVG incrementally and stream the result back.</p>
+  <p>Both servers run on the same computer for the demonstration, but the worker could run on another computer reachable over the network.</p>
+</article>
+
+<article class="demoCard">
+  <h3><a href="soap/">SOAP</a></h3>
+  <p>SOAP demonstrates delegation to an external service. An Achieve servlet uses the <code>soap</code> npm package to communicate with a SOAP service, receives its result, and adapts that result for the web application.</p>
+</article>
+
+</section>
+
+<section class="runNote">
+<h3>Running the demonstrations</h3>
+
+<p>Install the required packages as described in <code>README.md</code>. Then change to the adjacent Achieve directory and start the demonstration you want with <code>node start-&lt;demo&gt;.mjs</code>.</p>
+
+<p>Most demonstrations use port 8989. Cluster, Distributed Computing and SOAP also use port 8990, so run one demonstration at a time. MySQL additionally requires a running MySQL-compatible database and the supplied database setup.</p>
+</section>
+
+</main>
+
+<footer>
+  <a href="https://www.npmjs.com/package/achieve">Achieve on npm</a><br>
+  <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a>
+</footer>
+
+</body>
+</html>

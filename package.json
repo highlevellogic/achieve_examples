@@ -1,0 +1,10 @@
+{
+  "name": "achieve-examples",
+  "private": true,
+  "description": "Runnable examples for Achieve v3",
+  "dependencies": {
+    "@nodable/sax": "^1.2.1",
+    "mysql2": "^3.24.4",
+    "soap": "^1.11.0"
+  }
+}

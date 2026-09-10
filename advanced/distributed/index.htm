@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="icon" href="data:,">
+<title>Achieve v3 - Distributed Computing</title>
+<style>
+body { margin:0; padding:0; background-color:lightblue; font-family:Arial,sans-serif; }
+header img { width:100%; display:block; }
+#friend { margin:0; padding:0; text-align:center; color:rgb(40,200,32); font-style:italic; font-weight:bold; border-bottom:thick solid blue; }
+.navLink { display:inline-block; margin:1em 5% 0; }
+.backArrow { font-size:1.2em; }
+.tabs { padding:.5em 5% 0; border-bottom:solid blue 2px; }
+.tabs button { padding:.45em .8em; border:solid blue 2px; border-bottom:0; border-radius:.5em .5em 0 0; background-color:rgb(220,235,245); color:blue; cursor:pointer; }
+.tabs button.active { margin-bottom:-2px; border-bottom:solid lightblue 2px; background-color:lightblue; color:black; }
+.tabHint { margin:.5em 5%; font-size:.9em; font-style:italic; }
+main { margin:2% 5% 5%; }
+.diagram { margin:1em 0; font-weight:bold; color:#174f86; }
+.images { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.25em; max-width:76em; }
+.imagePanel { margin:0; padding:.75em; border-radius:.5em; background:white; }
+.imagePanel figcaption { margin-bottom:.5em; font-weight:bold; }
+.imagePanel img { display:block; width:100%; aspect-ratio:1; border:1px solid #174f86; background:#f8fbff; }
+#status { margin:1em 0; font-weight:bold; }
+code { padding:.08em .35em; border-radius:.3em; background-color:rgb(220,235,245); color:blue; font-family:Consolas,"Courier New",monospace; }
+pre { overflow:auto; padding:1em; border-radius:.4em; background-color:white; }
+#codeText { padding:0; border-radius:0; background-color:transparent; color:inherit; white-space:pre-wrap; }
+footer { padding:1.5% 5%; border-top:thick solid blue; }
+@media (max-width:760px) {
+  .images { grid-template-columns:1fr; }
+  .tabs button { padding:.4em .55em; font-size:.85em; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <img src="../../images/skyhigh1.jpg" alt="">
+</header>
+
+<h3 id="friend">Friendly in development. Fast in production.  Just build your apps. Let Achieve do the rest.</h3>
+
+<a class="navLink" href="../../"><span class="backArrow">←</span> Back to main examples index</a>
+
+<div class="tabs">
+  <button class="active" type="button" onclick="showDemo(this)">Demo</button>
+  <button type="button" onclick="showCode(this,'client')">Client</button>
+  <button type="button" onclick="showCode(this,'startup')">Startup</button>
+  <button type="button" onclick="showCode(this,'serverA')">Server A</button>
+  <button type="button" onclick="showCode(this,'relay')">Relay Servlet</button>
+  <button type="button" onclick="showCode(this,'serverB')">Server B</button>
+  <button type="button" onclick="showCode(this,'worker')">Worker Servlet</button>
+  <button type="button" onclick="showCode(this,'svg')">Source SVG</button>
+  <button type="button" onclick="showCode(this,'codeServlet')">Code Servlet</button>
+</div>
+
+<div class="tabHint">Use the tabs to inspect the code behind this demonstration.</div>
+
+<main>
+
+<section id="demo">
+
+<h2>Distributed Computing</h2>
+
+<p><strong>SCENARIO:</strong> Your application has a processing job that you want to offload from the computer serving the main application.</p>
+
+<p>Server A relays the SVG to a second Achieve application. Server B processes the SVG, removing dots outside the circle, and streams the result back through Server A.</p>
+
+<p class="diagram">Browser → Server A → Server B → Server A → Browser</p>
+
+<p>For convenience, both independent servers run on the same computer: Server A on port 8989 and Server B on port 8990. In a real distributed system, Server B could run on another computer reachable over the network. Server A remains involved as an I/O relay, but does not parse or filter the SVG.</p>
+
+<p>From the adjacent Achieve directory, run <code>node start-distributed.mjs</code>. The command starts both independent Achieve servers. Open <code>http://localhost:8989/advanced/distributed/</code>.</p>
+
+<div id="status">Loading and processing the SVG…</div>
+
+<div class="images">
+  <figure class="imagePanel">
+    <figcaption>Original</figcaption>
+    <img id="original" alt="Original field of colored dots">
+  </figure>
+
+  <figure class="imagePanel">
+    <figcaption>Processed by worker</figcaption>
+    <img id="processed" alt="Dots retained inside the circle by the worker server">
+  </figure>
+</div>
+
+</section>
+
+<section id="source" hidden>
+  <pre><code id="codeText"></code></pre>
+</section>
+
+</main>
+
+<footer>
+  <a href="https://www.npmjs.com/package/achieve">Achieve on npm</a><br>
+  <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a>
+</footer>
+
+<script>
+let originalUrl;
+let processedUrl;
+
+async function runDemo() {
+  const status = document.getElementById("status");
+
+  try {
+    // Fetch once: the displayed original and processing request use identical data.
+    const sourceResponse = await fetch("dots.svg", {cache:"no-store"});
+    if (!sourceResponse.ok) throw new Error(`Source SVG: HTTP ${sourceResponse.status}`);
+    const svg = await sourceResponse.text();
+
+    originalUrl = URL.createObjectURL(new Blob([svg], {type:"image/svg+xml"}));
+    document.getElementById("original").src = originalUrl;
+
+    const start = performance.now();
+
+    const processedResponse = await fetch("servlets/relay.jss.mjs", {
+      method:"POST",
+      headers:{"Content-Type":"image/svg+xml;charset=utf-8"},
+      body:svg
+    });
+
+    if (!processedResponse.ok)
+      throw new Error(`Distributed processing: HTTP ${processedResponse.status}`);
+
+    const processed = await processedResponse.text();
+
+    processedUrl = URL.createObjectURL(new Blob([processed], {type:"image/svg+xml"}));
+    document.getElementById("processed").src = processedUrl;
+
+    const originalDots = (svg.match(/class="dot"/g) || []).length;
+    const retainedDots = (processed.match(/class="dot"/g) || []).length;
+    const elapsed = performance.now() - start;
+
+    status.textContent =
+      `${retainedDots} of ${originalDots} dots retained · ${elapsed.toFixed(0)} ms through both servers`;
+  } catch (error) {
+    status.textContent = `Demo failed: ${error.message}`;
+  }
+}
+
+function setActive(button) {
+  document.querySelectorAll(".tabs button")
+    .forEach(item => item.classList.remove("active"));
+
+  button.classList.add("active");
+}
+
+function showDemo(button) {
+  setActive(button);
+  document.getElementById("source").hidden = true;
+  document.getElementById("demo").hidden = false;
+}
+
+async function showCode(button,file) {
+  setActive(button);
+
+  const response =
+    await fetch(`servlets/loadCode.jss.mjs?file=${encodeURIComponent(file)}`);
+
+  const text = await response.text();
+
+  document.getElementById("codeText").textContent = text;
+  document.getElementById("demo").hidden = true;
+  document.getElementById("source").hidden = false;
+}
+
+window.addEventListener("pagehide",() => {
+  if (originalUrl) URL.revokeObjectURL(originalUrl);
+  if (processedUrl) URL.revokeObjectURL(processedUrl);
+});
+
+window.onload = runDemo;
+</script>
+
+</body>
+</html>
