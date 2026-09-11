@@ -1,5 +1,5 @@
-Modifying cors8989.js run as server granting access via CORS policy
-Use cors8990.js with page http://localhost:8990/intermediate/cors/public/
+From the adjacent Achieve repository, run node start-cors.mjs.
+Open http://localhost:8990/intermediate/cors/public/
 
 Then 8990 will try to fetch resources with url: http://localhost:8989 ...
 

@@ -29,7 +29,7 @@ window.onload=init;
   <h1>CORS policy test 2</h1>
 
   <p>This example demonstrates CORS permission for specific directories and assets.</p>
-  <p>Open <code>http://localhost:8990/intermediate/cors/public/</code> after starting <code>cors8990.js</code>. Start <code>cors8989.js</code> for the configured origin. Expected result: the fetched script runs and displays its message.</p>
+  <p>From the adjacent Achieve repository, run <code>node start-cors.mjs</code>, then open <code>http://localhost:8990/intermediate/cors/public/</code>. The page is served from port 8990 and fetches a resource from the explicitly permitted server on port 8989. Expected result: the fetched script runs and displays its message.</p>
 
   <div id="result">Waiting for result.</div>
 </body>
