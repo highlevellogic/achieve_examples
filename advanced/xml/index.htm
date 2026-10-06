@@ -242,7 +242,7 @@ const xml = `<?xml version="1.0"?>
   <main>
     <section id="demo">
       <h1>XML-SAX</h1>
-      <p>From the adjacent Achieve directory, run <code>node start-xml.mjs</code>.</p>
+      <p>From the extracted distribution, run <code>npm start</code>.</p>
       
       <p>It's all about speed. For Content-type xml, Achieve quickly routes and gets out of the way, 
        passing the request stream to the servlet. With session.autoEnd=false, Achieve goes on to other work while
@@ -263,7 +263,7 @@ const xml = `<?xml version="1.0"?>
        <code>application/json</code> and <code>application/x-www-form-urlencoded</code>,
        delivering a convenient JavaScript object to the servlet as <code>session.params</code>.
        For other content types, as in this XML example, Achieve passes the request stream directly
-       to the servlet. For more information, see <a href="../../basics/servlets/">Introduction to servlets</a>. 
+       to the servlet. For more information, see the <a href="https://highlevellogic.github.io/achieve/reference/servlets.htm">Servlets Reference</a>.
        Even when achieve parses input, it still also delivers the original request and response objects as 
        session.request and session.response.
      </p>

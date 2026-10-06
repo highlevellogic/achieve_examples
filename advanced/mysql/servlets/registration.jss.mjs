@@ -22,7 +22,7 @@ export function servlet(session) {
   session.autoEnd = false;
 
   const con = mysql.createConnection(dbcreds);
-  const p = session.parms;
+  const p = session.params;
   const values = [p.name, p.uname, p.email, p.password];
 
   con.connect(function (err) {

@@ -21,7 +21,7 @@ export function servlet(session) {
   session.autoEnd = false;
 
   const con = mysql.createConnection(dbcreds);
-  const p = session.parms;
+  const p = session.params;
 
   con.connect(function (err) {
     if (err) {

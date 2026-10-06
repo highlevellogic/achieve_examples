@@ -6,8 +6,6 @@ import path from "node:path";
 const files = {
   client: "../index.htm",
   startup: path.resolve(process.argv[1]),
-  single: path.resolve(process.argv[1]),
-  cluster: path.resolve(process.argv[1]),
   servlet: "primes.jss"
 };
 

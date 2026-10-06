@@ -128,8 +128,6 @@ footer {
   <button class="active" onclick="showDemo(this)">Demo</button>
   <button onclick="showCode(this,'client')">Client</button>
   <button onclick="showCode(this,'startup')">Startup</button>
-  <button onclick="showCode(this,'single')">Single Process</button>
-  <button onclick="showCode(this,'cluster')">Cluster</button>
   <button onclick="showCode(this,'servlet')">Prime Servlet</button>
 </div>
 
@@ -141,7 +139,7 @@ footer {
 
 <h2>Cluster</h2>
 
-<p>From the adjacent Achieve directory, run <code>node start-cluster.mjs</code>. It starts the single-process server on port 8989 and the clustered server on port 8990.</p>
+<p>From the extracted distribution, run <code>npm run start:cluster</code>. It starts the single-process server on port 8989 and the clustered server on port 8990.</p>
 
 <p><strong>SCENARIO:</strong> Your application needs more processing power than a single Node.js process can provide.</p>
 

@@ -47,9 +47,7 @@ footer { padding:1.5% 5%; border-top:thick solid blue; }
   <button class="active" type="button" onclick="showDemo(this)">Demo</button>
   <button type="button" onclick="showCode(this,'client')">Client</button>
   <button type="button" onclick="showCode(this,'startup')">Startup</button>
-  <button type="button" onclick="showCode(this,'serverA')">Server A</button>
   <button type="button" onclick="showCode(this,'relay')">Relay Servlet</button>
-  <button type="button" onclick="showCode(this,'serverB')">Server B</button>
   <button type="button" onclick="showCode(this,'worker')">Worker Servlet</button>
   <button type="button" onclick="showCode(this,'svg')">Source SVG</button>
   <button type="button" onclick="showCode(this,'codeServlet')">Code Servlet</button>
@@ -71,7 +69,7 @@ footer { padding:1.5% 5%; border-top:thick solid blue; }
 
 <p>For convenience, both independent servers run on the same computer: Server A on port 8989 and Server B on port 8990. In a real distributed system, Server B could run on another computer reachable over the network. Server A remains involved as an I/O relay, but does not parse or filter the SVG.</p>
 
-<p>From the adjacent Achieve directory, run <code>node start-distributed.mjs</code>. The command starts both independent Achieve servers. Open <code>http://localhost:8989/advanced/distributed/</code>.</p>
+<p>From the extracted distribution, run <code>npm run start:distributed</code>. The command starts both independent Achieve servers. Open <code>http://localhost:8989/advanced/distributed/</code>.</p>
 
 <div id="status">Loading and processing the SVG…</div>
 

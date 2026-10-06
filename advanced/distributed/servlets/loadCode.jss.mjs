@@ -6,9 +6,7 @@ import path from "node:path";
 const files = {
   client: "../index.htm",
   startup: path.resolve(process.argv[1]),
-  serverA: path.resolve(process.argv[1]),
   relay: "relay.jss.mjs",
-  serverB: path.resolve(process.argv[1]),
   worker: "../worker/servlets/filterSvg.jss.mjs",
   svg: "../dots.svg",
   codeServlet: "loadCode.jss.mjs"

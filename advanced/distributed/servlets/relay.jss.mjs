@@ -2,6 +2,8 @@
 
 import http from "node:http";
 
+const workerPort = Number(process.env.ACHIEVE_EXAMPLES_SECONDARY_PORT || 8990);
+
 export function servlet(session) {
   session.autoEnd = false;
 
@@ -16,7 +18,7 @@ export function servlet(session) {
   // This server relays I/O; the worker owns the SVG-specific processing.
   const workerRequest = http.request({
     hostname: "localhost",
-    port: 8990,
+    port: workerPort,
     path: "/advanced/distributed/worker/servlets/filterSvg.jss.mjs",
     method: "POST",
     headers
