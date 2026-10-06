@@ -18,7 +18,7 @@ const dbcreds = {
 };
 
 export function servlet(session) {
-  session.allowAsync = true;
+  session.autoEnd = false;
 
   const con = mysql.createConnection(dbcreds);
   const p = session.parms;

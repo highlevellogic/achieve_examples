@@ -22,7 +22,7 @@ function openingTag(name,attributes) {
 }
 
 export function servlet(session) {
-  session.allowAsync = true;
+  session.autoEnd = false;
   session.response.setHeader("Content-Type","image/svg+xml;charset=utf-8");
 
   let boundary;

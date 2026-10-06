@@ -245,7 +245,7 @@ const xml = `<?xml version="1.0"?>
       <p>From the adjacent Achieve directory, run <code>node start-xml.mjs</code>.</p>
       
       <p>It's all about speed. For Content-type xml, Achieve quickly routes and gets out of the way, 
-       passing the request stream to the servlet. With session.allowAsync=true;, Achieve goes on to other work while 
+       passing the request stream to the servlet. With session.autoEnd=false, Achieve goes on to other work while
        the servlet is free to use the request and response streams directly.</p>
        <p>
         SAX is a perfect companion. It doesn't create a DOM object. <a class="packageLink" href="https://www.npmjs.com/package/@nodable/sax">@nodable/sax</a> 

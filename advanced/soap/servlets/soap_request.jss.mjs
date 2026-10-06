@@ -4,7 +4,7 @@ import soap from 'soap';
 
 export async function servlet(session) {
 
-session.allowAsync = true;
+session.autoEnd = false;
 
 try {
   const client = await soap.createClientAsync("http://localhost:8990/soap?wsdl");

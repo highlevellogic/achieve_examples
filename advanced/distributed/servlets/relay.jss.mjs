@@ -3,7 +3,7 @@
 import http from "node:http";
 
 export function servlet(session) {
-  session.allowAsync = true;
+  session.autoEnd = false;
 
   const headers = {
     "content-type": session.request.headers["content-type"] || "image/svg+xml"

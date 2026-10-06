@@ -8,7 +8,7 @@ This is a modified example available @ https://www.npmjs.com/package/@nodable/sa
 Modifications are made to run in servlet.
 See stream handling below the sax code.
 
-This servlet runs async. (session.allowAsync = true;)
+This servlet owns response completion. (session.autoEnd = false;)
 Servlet must handle response and end and must be adequately protected with try-catch.
 */
 'use strict';
@@ -17,7 +17,7 @@ import { SaxParser } from '@nodable/sax';
 
 export function servlet(session) {
 
-session.allowAsync = true;
+session.autoEnd = false;
 session.response.setHeader("Content-Type","application/x-ndjson;charset=utf-8");
 
 let depth = 0;
