@@ -81,6 +81,14 @@
 
       main { margin:2% 5% 5%; }
 
+      code {
+        padding:.08em .35em;
+        border-radius:.3em;
+        background-color:rgb(220,235,245);
+        color:blue;
+        font-family:Consolas,"Courier New",monospace;
+      }
+
       .clients {
         display:flex;
         gap:1em;
@@ -96,6 +104,10 @@
       }
 
       #codeText {
+        padding:0;
+        border-radius:0;
+        background-color:transparent;
+        color:inherit;
         white-space:pre-wrap;
       }
 
@@ -158,7 +170,18 @@
   <main>
     <section id="demo">
       <h1>WebSockets and Rooms</h1>
-      <p style="font-weight:bold;font-style:italic">Achieve works easily with other Node.js packages. The Startup tab shows how <code>ws</code> adds WebSocket support to the Achieve HTTP server. From the extracted distribution, run <code>npm run start:websockets</code>.</p>
+
+      <p>Achieve works easily with other Node.js packages. The Startup tab shows
+      how <code>ws</code> adds WebSocket support to the Achieve HTTP server.</p>
+
+      <p>To start the WebSocket demonstration, open a terminal in the extracted
+      <code>achieve_examples</code> directory and enter:</p>
+
+      <pre><code>npm run start:websockets</code></pre>
+
+      <p><strong>Refresh this browser page after starting the WebSocket-enabled server</strong>
+      to establish the WebSocket connections.</p>
+
       <p>Another package, <a class="packageLink" href="https://www.npmjs.com/package/achieve_rooms">achieve_rooms</a>, organizes WebSocket connections into groups, much like chat rooms.
       The three clients below initially join the same room and can exchange messages with the other clients in that room.</p>
 
@@ -202,7 +225,7 @@ const options = {
       <p>The rest of the startup code remains the same.</p>
 
     </section>
-    
+
     <section id="codeDisplay" style="display:none;">
       <pre><code id="codeText"></code></pre>
     </section>
