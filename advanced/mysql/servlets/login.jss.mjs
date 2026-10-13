@@ -27,7 +27,7 @@ export function servlet(session) {
     if (err) {
       console.log("connection error: " + err.message);
       session.response.end("login failed: " + err.message);
-      con.end();
+      con.destroy();
       return;
     }
 
@@ -44,7 +44,7 @@ export function servlet(session) {
           session.response.end("successful login: " + p.uname);
         }
       } finally {
-        con.end();
+        con.destroy();
       }
     });
   });

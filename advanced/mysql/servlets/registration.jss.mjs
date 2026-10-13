@@ -29,7 +29,7 @@ export function servlet(session) {
     if (err) {
       console.log("connection error: " + err.message);
       session.response.end("registration failed: " + err.message);
-      con.end();
+      con.destroy();
       return;
     }
 
@@ -44,7 +44,7 @@ export function servlet(session) {
         console.log("registration complete: " + p.uname);
         session.response.end("registration complete");
       } finally {
-        con.end();
+        con.destroy();
       }
     });
   });
