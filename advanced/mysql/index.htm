@@ -222,7 +222,6 @@
     <button type="button" onclick="showCode(this,'dbsql')">Database</button>
     <button type="button" onclick="showCode(this,'register')">Register Servlet</button>
     <button type="button" onclick="showCode(this,'login')">Login Servlet</button>
-    <button type="button" onclick="showCode(this,'codeServlet')">Code Servlet</button>
   </div>
 
   <div class="tabHint">Use the tabs to inspect the code behind this demonstration.</div>
@@ -231,7 +230,9 @@
     <section id="demo">
       <h1>MySQL</h1>
 
-      <p>Run <code>npm start</code> from the extracted distribution. Before using the forms, run <code>application/advanced/mysql/setup.sql</code> on a MySQL-compatible server and set the database credentials in both servlets.</p>
+      <p>In phpMyAdmin, use the Import tab to import <code>application/advanced/mysql/setup.sql</code>. The SQL file is imported, not executed as a program. It creates the <code>achieve_demo</code> database and its <code>users</code> table.</p>
+
+      <p>Set the database credentials in both servlets, then run <code>npm start</code> from the extracted distribution. Refresh this page after starting the server.</p>
 
       <p>
         This demonstration connects an Achieve application to a MySQL database using the
@@ -307,7 +308,9 @@
 
   <footer>
     <a href="https://www.npmjs.com/package/achieve">Achieve on npm</a><br>
-    <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a>
+    <a href="https://github.com/highlevellogic/achieve">Achieve on GitHub</a><br>
+    <a href="https://github.com/highlevellogic/achieve/discussions">Achieve Discussions</a><br>
+    <a href="https://github.com/highlevellogic/achieve/issues">Report bugs on GitHub Issues</a>
   </footer>
 </body>
 </html>
