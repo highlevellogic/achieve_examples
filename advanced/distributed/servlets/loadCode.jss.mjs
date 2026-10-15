@@ -1,3 +1,10 @@
+/*
+ * JavaScript Servlet for Achieve
+ * https://www.npmjs.com/package/achieve
+ *
+ * Achieve invokes servlet(session) when the
+ * corresponding URL is requested.
+ */
 // advanced/distributed/servlets/loadCode.jss.mjs
 
 import fs from "node:fs";

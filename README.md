@@ -1,5 +1,23 @@
 # Achieve examples
 
+## How requests reach JavaScript Servlets
+
+Achieve provides the HTTP server, request handling, URL mapping, and servlet
+invocation. Application developers place servlet files in the configured
+application directory and export a `servlet(session)` function; Achieve invokes
+that function when the corresponding URL is requested.
+
+For example, the beginner startup application contains
+`basics/startup/application/servlets/hello.jss`. The source-checkout launchers
+configure this entire repository as the application directory. After installing
+the dependencies as described below, run `node start-xml.mjs` from the adjacent
+`achieve` repository; requesting
+`http://localhost:8989/basics/startup/application/servlets/hello.jss` then
+invokes the servlet. The file exports its handler with `exports.servlet`.
+Application logic can use ordinary Node.js modules and installed npm packages.
+Achieve already supplies the HTTP server, request processing, and routing used
+by these examples, so an additional HTTP framework is unnecessary.
+
 The examples are a separate application package. From this directory, install
 the dependencies used directly by the example application code:
 

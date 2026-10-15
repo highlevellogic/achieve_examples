@@ -1,4 +1,11 @@
 /*
+ * JavaScript Servlet for Achieve
+ * https://www.npmjs.com/package/achieve
+ *
+ * Achieve invokes servlet(session) when the
+ * corresponding URL is requested.
+ */
+/*
 IMPORTANT:
 request "Content-type" is "application/xml;charset=utf-8"
 

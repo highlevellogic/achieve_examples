@@ -1,4 +1,11 @@
 /*
+ * JavaScript Servlet for Achieve
+ * https://www.npmjs.com/package/achieve
+ *
+ * Achieve invokes servlet(session) when the
+ * corresponding URL is requested.
+ */
+/*
 ...servlets/loadCode.jss.mjs
 This servlet reads source code used in examples and returns it to the web page.
 */

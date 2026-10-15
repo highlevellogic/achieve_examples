@@ -1,3 +1,10 @@
+/*
+ * JavaScript Servlet for Achieve
+ * https://www.npmjs.com/package/achieve
+ *
+ * Achieve invokes servlet(session) when the
+ * corresponding URL is requested.
+ */
 'use strict';
 
 import soap from 'soap';
